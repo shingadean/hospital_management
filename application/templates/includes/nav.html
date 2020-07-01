@@ -1,0 +1,33 @@
+<div>
+    {% if session['username'] %}
+    <div class="dropdown">
+      <button class="dropbtn">Patient</button>
+      <div class="dropdown-content">
+        <a href="{{ url_for('update_patient')}}">Update Patient</a>
+        <a href="#">Delete Patient</a>
+        <a href="{{ url_for('create_patient') }}">Create Patient</a>
+        <a href="#">Patient Details</a>
+        <a href="#">Billing</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Diagnostics</button>
+      <div class="dropdown-content">
+        <a href="#">Diagnostics Details</a>
+        <a href="#">Add Diagnostics</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Pharmacy</button>
+      <div class="dropdown-content">
+        <a href="#">Pharmacy Details</a>
+        <a href="#">Add Medicine</a>
+      </div>
+    </div>
+    <div class="dropdown">
+        <a class="dropbtn" href="{{ url_for('logout') }}">Logout</a>
+     </div>
+    {% endif %}
+</div>

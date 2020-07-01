@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2><strong>CREATE PATIENT</strong></h2>
+<div class="form-box">
+    <form name="create-patient" action="" method="post" >
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td><h4>{{ form.ssn_id.label }}:</h4></td>
+                <td>{{ form.ssn_id }}</td>
+                <td>
+                    {% for message in form.ssn_id.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+                <td>{{ form.submit(value="GET")}}</td>
+            </tr>
+            </table>
+    </form>
+</div>
+
+
+
+{% endblock %}
