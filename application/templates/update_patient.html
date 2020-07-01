@@ -2,21 +2,105 @@
 
 {% block content %}
 
-<h2><strong>CREATE PATIENT</strong></h2>
+<h2><strong>Update PATIENT</strong></h2>
 <div class="form-box">
     <form name="create-patient" action="" method="post" >
         {{ form.csrf_token }}
         <table>
             <tr>
                 <td><h4>{{ form.ssn_id.label }}:</h4></td>
-                <td>{{ form.ssn_id }}</td>
+                {% if not new_ssn_id %}
+                    <td>{{ form.ssn_id }}</td>
+                    <td>
+                        {% for message in form.ssn_id.errors %}
+                            <span class="error-message">{{message}}</span>
+                        {% endfor %}
+                    </td>
+                        <td>{{ form.submit(value="GET")}}</td>
+                {% else %}
+                <td><h4>{{ search.ssn_id }}</h4></td>
+                {% endif %}
+            </tr>
+
+            {% if new_ssn_id %}
+
+            <tr>
+                <td><h4>{{ form.patient_name.label }}:</h4></td>
+                <td><h4>{{ search.name }}</h4></td>
+                <td>{{ form.patient_name(placeholder="New Name") }}</td>
                 <td>
-                    {% for message in form.ssn_id.errors %}
+                    {% for message in form.patient_name.errors %}
                         <span class="error-message">{{message}}</span>
                     {% endfor %}
                 </td>
-                <td>{{ form.submit(value="GET")}}</td>
             </tr>
+            <tr>
+                <td><h4>{{ form.patient_age.label }}:</h4></td>
+                <td><h4>{{ search.age }}</h4></td>
+                <td>{{ form.patient_age }}</td>
+                <td>
+                    {% for message in form.patient_age.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td><h4>{{ form.admission_date.label }}:</h4></td>
+                <td><h4>{{ search.admission }}</h4></td>
+                <td>{{ form.admission_date }}</td>
+                <td>
+                    {% for message in form.admission_date.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td><h4>{{ form.bed_type.label }}:</h4></td>
+                <td><h4>{{ search.bed_type }}</h4></td>
+                <td>{{ form.bed_type }}</td>
+                <td>
+                    {% for message in form.bed_type.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td><h4>{{ form.address.label }}:</h4></td>
+                <td><h4>{{ search.address }}</h4></td>
+                <td>{{ form.address( placeholder="New Address" ) }}</td>
+                <td>
+                    {% for message in form.address.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td><h4>{{ form.city.label}}:</h4></td>
+                <td><h4>{{ search.city }}</h4></td>
+                <td>{{ form.city( placeholder="New City" ) }}</td>
+                <td>
+                    {% for message in form.city.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td><h4>{{ form.state.label }}:</h4></td>
+                <td><h4>{{ search.state }}</h4></td>
+                <td>{{ form.state( placeholder="New State" ) }}</td>
+                <td>
+                    {% for message in form.state.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.submit( value="Update" ) }}</td>
+                <td><button type="reset">RESET</button></td>
+            </tr>
+
+            {% endif %}
+
             </table>
     </form>
 </div>
