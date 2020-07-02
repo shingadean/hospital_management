@@ -1,7 +1,6 @@
 from application import app, db
 from flask import render_template, request, json, Response, redirect, flash, url_for, session, jsonify
 from flask_restplus import Resource
-import mongoengine.errors
 from application.forms import LoginForm, PatientForm
 from application.models import Login, Patient
 
@@ -53,17 +52,15 @@ def create_patient():
         city = form.city.data
         state = form.state.data
 
-        try:
-            if ssn_id:
-                patient = Patient(patient_id=patient_id, ssn_id=ssn_id, name=name, age=age, admission=adm_date,
+        if ssn_id:
+            patient = Patient(patient_id=patient_id, ssn_id=ssn_id, name=name, age=age, admission=adm_date,
                               bed_type=bed_type, city=city, state=state, address=address)
-                patient.save()
-                flash("Patient Registered Successfully", 'success')
-                return redirect(url_for("create_patient"))
-            else:
-                flash("Sorry, Something went Wrong", 'danger')
-        except mongoengine.errors.NotUniqueError:
-            flash("SSN_ID is Taken. Please Enter New SSN id")
+            patient.save()
+            flash("Patient Registered Successfully", 'success')
+            return redirect(url_for("create_patient"))
+        else:
+            flash("Sorry, Something went Wrong", 'danger')
+
     return render_template("create_patient.html", title="Patients", form=form)
 
 

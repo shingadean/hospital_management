@@ -1,9 +1,9 @@
 from flask import Flask
 from config import Config
 from flask_mongoengine import MongoEngine, BaseQuerySet
-from flask_restplus import Api
+
 from werkzeug.utils import cached_property
-from flask_pymongo import PyMongo
+
 
 app = Flask(__name__)
 app.config.from_object(Config)

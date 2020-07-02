@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>PHARMACY </h2>
+
+<table>
+  <tr>
+    <th>patient id</th>
+    <th>name</th>
+    <th>age</th>
+      <th>adress</th>
+      <th>DOJ</th>
+      <th>type</th>
+
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>abhijit</td>
+    <td>22</td>
+      <td>khardi</td>
+       <td>05051998</td>
+       <td>single</td>
+</table>
+
+
+<br>
+<h2>medicines issued </h2>
+<table>
+    <tr>
+    <th>medicine</th>
+    <th>quantity</th>
+    <th>rate</th>
+      <th>amount</th>
+
+  </tr>
+  <tr>
+    <td>paracetamol</td>
+    <td>1</td>
+    <td>55.0</td>
+      <td>55.0</td>
+</table>
+<br>
+ <div style="text-align:center;">
+    <button>issue medicines</button>
+</div>
+<br>
+<table>
+    <tr>
+    <th>medicine</th>
+    <th>quantity</th>
+    <th>rate</th>
+      <th>amount</th>
+
+  </tr>
+  <tr>
+    <td>paracetamol</td>
+    <td>1</td>
+    <td>55.0</td>
+      <td>55.0</td>
+</table>
+<div style="text-align:right;">
+    <button>add</button>
+</div>
+<br>
+<div style="text-align:center;">
+    <button>update</button>
+</div>
+
+</body>
+</html>
+
+
+{% endblock %}

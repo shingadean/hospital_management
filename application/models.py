@@ -3,7 +3,6 @@ from application import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import email_validator
 
-from pymongo import MongoClient
 
 class Login(db.Document):
     username = db.StringField(maxlength=50, unique=True)
