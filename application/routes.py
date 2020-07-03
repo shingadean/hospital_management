@@ -1,10 +1,14 @@
 from application import app, db
 from flask import render_template, request, json, Response, redirect, flash, url_for, session, jsonify
 from flask_restplus import Resource
-from application.forms import LoginForm, PatientForm
-from application.models import Login, Patient
+from application.forms import LoginForm, PatientForm, MedForm
+from application.models import Login, Patient, IssueMedicine, Medicine
+import copy
 
 search_ssn = None
+med_name_search = None
+med_id_search = None
+
 
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/", methods=["GET", "POST"])
@@ -75,7 +79,8 @@ def update_patient():
         try:
             search = Patient.objects.get(ssn_id=search_id)
             search_ssn = search_id
-            return render_template("update_patient.html", title="update patient", form=form, new_ssn_id=True,search=search)
+            return render_template("update_patient.html", title="update patient", form=form, new_ssn_id=True,
+                                   search=search)
         except Patient.DoesNotExist:
             flash('Patient Does Not Exist', 'danger')
 
@@ -92,11 +97,11 @@ def update_patient():
 
         update_data = Patient.objects.get(ssn_id=id)
         update_data.update(name=name, age=age, admission=adm_date, bed_type=bed_type, address=address, city=city,
-                               state=state)
+                           state=state)
         print(update_data)
 
         if update_data:
-            search_ssn=None
+            search_ssn = None
             flash("Updated Successfully", "success")
             return redirect(url_for("update_patient"))
         else:
@@ -105,9 +110,8 @@ def update_patient():
     return render_template("update_patient.html", title="Update Patient", form=form, new_ssn_id=False)
 
 
-@app.route("/delete_patient", methods=['GET',"POST"])
+@app.route("/delete_patient", methods=['GET', "POST"])
 def delete_patient():
-
     global search_ssn
 
     form = PatientForm()
@@ -130,3 +134,76 @@ def delete_patient():
         flash("Data Deleted successfully", "success")
 
     return render_template("delete_patient.html", title="DELETE PATIENT", form=form)
+
+
+@app.route("/pharmacy", methods=["GET", "POST"])
+def pharmacy():
+    global search_ssn
+
+    form = PatientForm()
+
+    search_id = form.ssn_id.data
+    if search_id:
+        try:
+            search = Patient.objects.get(ssn_id=search_id)
+            search_ssn = search_id
+            med_details = IssueMedicine.objects.get(ssn_id=search_id)
+            return render_template("pharmacy.html", title="Pharmacy Details", form=form, new_ssn_id=True,
+                                   search=search, med=med_details)
+        except Patient.DoesNotExist:
+            flash('Patient Does Not Exist', 'danger')
+        except IssueMedicine.DoesNotExist:
+            return render_template("pharmacy.html", title="Pharmacy Details", form=form, new_ssn_id=True,
+                                   search=search, med=None)
+
+    return render_template("pharmacy.html", title="PHARMACY", form=form, new_ssn_id=False)
+
+
+@app.route('/add_medicine/<id>', methods=["GET", "POST"])
+def add_medicine(id):
+    global search_ssn, med_id_search, med_name_search
+
+    form = MedForm()
+
+    name_med = form.med_name.data
+
+    if name_med:
+        med_details = Medicine.objects.get(med_name=name_med)
+        search_ssn = id
+        med_name_search = name_med
+        med_id_search = med_details.med_id
+        return render_template("add_medicine.html", title="Add Medicine", form=form, med_name=True,
+                               search=med_details, patient_id=id)
+
+    intake_quant = form.take.data
+    if intake_quant is not None:
+        Med_data = Medicine.objects.get(med_id=med_id_search)
+        curr_quant = Med_data.quantity
+        new = curr_quant - intake_quant
+
+        check = list(IssueMedicine.objects.aggregate(*
+                                                     [
+                                                         {
+                                                             '$match': {
+                                                                 'ssn_id': search_ssn
+                                                             }
+                                                         }
+                                                     ]
+                                                     ))
+        print(check)
+        if len(check) == 0:
+
+            new_issue = IssueMedicine(ssn_id = search_ssn, med_id= [med_id_search], med_name = [med_name_search], quantity_taken=[intake_quant])
+            new_issue.save()
+            Med_data.update(quantity = new)
+            return "<h1>HII</h1>"
+        else:
+
+            update_issue = IssueMedicine.objects.get(ssn_id=search_ssn)
+            update_issue.update(push__quantity_taken=intake_quant)
+
+            return "<h1>123</h1>"
+
+
+
+    return render_template("add_medicine.html", id=search_ssn, med_name=False, form=form, title="ADD MEDICINE")

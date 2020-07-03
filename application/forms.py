@@ -5,8 +5,15 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from application.models import Login
 from wtforms.fields.html5 import DateField
+from application.models import Medicine
 
 
+med_data = Medicine.objects
+
+med_name = [(i.med_name, i.med_name) for i in med_data]
+med_id = [(str(i.med_id), i.med_id) for i in med_data]
+med_rate = [(str(i.med_rate), i.med_rate) for i in med_data]
+med_quant = [(str(i.quantity), i.quantity) for i in med_data]
 
 
 class LoginForm(FlaskForm):
@@ -23,4 +30,10 @@ class PatientForm(FlaskForm):
     address = StringField("Address", validators=[DataRequired()])
     city = StringField("City", validators=[DataRequired()])
     state = StringField("State", validators=[DataRequired()])
+    submit = SubmitField("SUBMIT")
+
+class MedForm(FlaskForm):
+
+    med_name = SelectField("Medicine Name", validators=[DataRequired()], choices=med_name, coerce=str)
+    take = IntegerField("Enter Quantity", validators=[DataRequired()])
     submit = SubmitField("SUBMIT")

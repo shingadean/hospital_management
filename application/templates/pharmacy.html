@@ -24,73 +24,102 @@ tr:nth-child(even) {
 </style>
 </head>
 <body>
+{% if not new_ssn_id %}
+    <h2><strong>PHARMACY</strong></h2>
+    <div class="form-box">
+        <form name="create-patient" action="" method="post" >
+            {{ form.csrf_token }}
+            <table>
+                <tr>
+                    <td><h4>{{ form.ssn_id.label }}:</h4></td>
+                        <td>{{ form.ssn_id }}</td>
+                        <td>
+                            {% for message in form.ssn_id.errors %}
+                                <span class="error-message">{{message}}</span>
+                            {% endfor %}
+                        </td>
+                            <td>{{ form.submit(value="GET")}}</td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endif %}
 
-<h2>PHARMACY </h2>
+{% if new_ssn_id %}
+    <table>
+      <tr>
+        <th>patient id</th>
+        <th>name</th>
+        <th>age</th>
+          <th>adress</th>
+          <th>DOJ</th>
+          <th>type</th>
 
-<table>
-  <tr>
-    <th>patient id</th>
-    <th>name</th>
-    <th>age</th>
-      <th>adress</th>
-      <th>DOJ</th>
-      <th>type</th>
+      </tr>
+        <tr><h4 style="text-align:center">PATIENT DETAILS</h4></tr>
+      <tr>
+        <td>{{ search.ssn_id }}</td>
+        <td>{{ search.name }}</td>
+        <td>{{ search.age }}</td>
+          <td>{{ search.address }}</td>
+           <td>{{ search.admission }}</td>
+           <td>{{ search.bed_type }}</td>
+    </table>
 
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>abhijit</td>
-    <td>22</td>
-      <td>khardi</td>
-       <td>05051998</td>
-       <td>single</td>
-</table>
+    {% if med %}
+    <br>
+    <h2>medicines issued </h2>
+    <table>
+        <tr>
+        <th>medicine</th>
+        <th>quantity</th>
+        <th>rate</th>
+          <th>amount</th>
+
+      </tr>
+      <tr>
+        <td>paracetamol</td>
+        <td>1</td>
+        <td>55.0</td>
+          <td>55.0</td>
+    </table>
+    <br>
+     <div style="text-align:center;">
+        <a href="{{ url_for('add_medicine', id = search.ssn_id) }}"><button>issue medicines</button></a>
+    </div>
+    <br>
+    <table>
+        <tr>
+        <th>medicine</th>
+        <th>quantity</th>
+        <th>rate</th>
+          <th>amount</th>
+
+      </tr>
+      <tr>
+        <td>paracetamol</td>
+        <td>1</td>
+        <td>55.0</td>
+          <td>55.0</td>
+    </table>
+    <div style="text-align:right;">
+        <button>add</button>
+    </div>
+    <br>
+    <div style="text-align:center;">
+        <button>update</button>
+    </div>
+    {% else %}
+    <h4 style="text-align:center; font-weight:bolder">No Medicines Issued</h4>
+
+     <div style="text-align:center;">
+        <a href="{{ url_for('add_medicine', id = search.ssn_id) }}"><button>issue medicines</button></a>
+    </div>
+    {% endif %}
 
 
-<br>
-<h2>medicines issued </h2>
-<table>
-    <tr>
-    <th>medicine</th>
-    <th>quantity</th>
-    <th>rate</th>
-      <th>amount</th>
-
-  </tr>
-  <tr>
-    <td>paracetamol</td>
-    <td>1</td>
-    <td>55.0</td>
-      <td>55.0</td>
-</table>
-<br>
- <div style="text-align:center;">
-    <button>issue medicines</button>
-</div>
-<br>
-<table>
-    <tr>
-    <th>medicine</th>
-    <th>quantity</th>
-    <th>rate</th>
-      <th>amount</th>
-
-  </tr>
-  <tr>
-    <td>paracetamol</td>
-    <td>1</td>
-    <td>55.0</td>
-      <td>55.0</td>
-</table>
-<div style="text-align:right;">
-    <button>add</button>
-</div>
-<br>
-<div style="text-align:center;">
-    <button>update</button>
-</div>
-
-</body>
+{% endif %}
+    </body>
 </html>
 
 

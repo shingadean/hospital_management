@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2><strong>Add Medicine</strong></h2>
+<div class="form-box">
+    <form name="create-patient" action="" method="post" >
+        {{ form.csrf_token }}
+        <table>
+            <tr>
+                <td><h4>Medicine Name:</h4></td>
+                {% if not med_name %}
+                    <td>{{ form.med_name }}</td>
+                    <td>{{ form.submit(value="GET")}}</td>
+                {% else %}
+                <td><h4>{{ search.med_name }}</h4></td>
+                {% endif %}
+            </tr>
+
+            {% if med_name %}
+
+            <tr>
+                <td><h4>MEDICINE ID:</h4></td>
+                <td><h4>{{ search.med_id }}</h4></td>
+            </tr>
+
+            <tr>
+                <td><h4>Quantity Available:</h4></td>
+                <td><h4>{{ search.quantity }}</h4></td>
+            </tr>
+
+            <tr>
+                <td><h4>{{ form.take.label }}:</h4></td>
+                <td>{{ form.take }}</td>
+                <td>
+                    {% for message in form.take.errors %}
+                        <span class="error-message">{{message}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>{{ form.submit( value="ADD" ) }}</td>
+                <td><button type="reset">RESET</button></td>
+            </tr>
+
+            {% endif %}
+
+            </table>
+    </form>
+</div>
+
+
+
+{% endblock %}
